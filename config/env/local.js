@@ -3,5 +3,5 @@ module.exports = {
     sqlhost:'localhost',
     sqlusername:'root',
     sqlpassword: 'root',
-    sqldbName:'test2',
+    sqldbName:'eatbite',
 };

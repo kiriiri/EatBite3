@@ -21,7 +21,8 @@ function parallel(middlewares) {
 }
 
 function setMiddleWares(app) {
-    app.use((req, res, next) => { // Set response headers
+    app.use((req, res, next) => { 
+        // Set response headers
         res.header("Access-Control-Allow-Origin","*")
         res.header("Access-Control-Allow-Headers", "origin,X-Requested-With,Content-Type,Accept,Authorization")
         res.setHeader('Access-Control-Allow-Headers', '*');
