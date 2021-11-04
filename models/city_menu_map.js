@@ -13,15 +13,31 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
-    detail_id: {
+    menu_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
-      comment: "User associated personal details",
-      field: "detail_id",
-      unique: "user_uk_detail_id"
+      comment: null,
+      field: "menu_id",
+      references: {
+        key: "id",
+        model: "menus_model"
+      }
+    },
+    city_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "city_id",
+      references: {
+        key: "id",
+        model: "city_model"
+      }
     },
     date_created: {
       type: DataTypes.DATE,
@@ -39,11 +55,7 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "created_by",
-      references: {
-        key: "id",
-        model: "user_model"
-      }
+      field: "created_by"
     },
     date_modified: {
       type: DataTypes.DATE,
@@ -61,28 +73,24 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "modified_by",
-      references: {
-        key: "id",
-        model: "user_model"
-      }
+      field: "modified_by"
     }
   };
   const options = {
-    tableName: "user",
+    tableName: "city_menu_map",
     comment: "",
     indexes: [{
-      name: "user_fk_created_by",
+      name: "city_menu_map_FK",
       unique: false,
       type: "BTREE",
-      fields: ["created_by"]
+      fields: ["city_id"]
     }, {
-      name: "user_fk_modified_by",
+      name: "city_menu_map_FK_1",
       unique: false,
       type: "BTREE",
-      fields: ["modified_by"]
+      fields: ["menu_id"]
     }]
   };
-  const UserModel = sequelize.define("user_model", attributes, options);
-  return UserModel;
+  const CityMenuMapModel = sequelize.define("city_menu_map_model", attributes, options);
+  return CityMenuMapModel;
 };

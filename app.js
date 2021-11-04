@@ -10,7 +10,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 const {beforeRequest} = require('./middleware/beforeRequest');
-
+require('./utils/handlers')()
 
 function parallel(middlewares) {
   return function (req, res, next) {
@@ -57,7 +57,9 @@ function setMiddleWares(app) {
 
 function loadRoutes(app){
     require('./routes/index')(app)
-    require('./routes/users')(app)
+    require('./routes/accountManagement')(app)
+    require('./routes/restaurantManagement')(app)
+
 
     // If not matched to any route, return not found error
     app.use((req, res, next) => {

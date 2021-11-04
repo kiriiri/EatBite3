@@ -13,15 +13,23 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
-    detail_id: {
+    restaurant_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
-      comment: "User associated personal details",
-      field: "detail_id",
-      unique: "user_uk_detail_id"
+      comment: null,
+      field: "restaurant_id"
+    },
+    country_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "country_id"
     },
     date_created: {
       type: DataTypes.DATE,
@@ -39,11 +47,7 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "created_by",
-      references: {
-        key: "id",
-        model: "user_model"
-      }
+      field: "created_by"
     },
     date_modified: {
       type: DataTypes.DATE,
@@ -61,28 +65,14 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "modified_by",
-      references: {
-        key: "id",
-        model: "user_model"
-      }
+      field: "modified_by"
     }
   };
   const options = {
-    tableName: "user",
+    tableName: "restaurant_country_map",
     comment: "",
-    indexes: [{
-      name: "user_fk_created_by",
-      unique: false,
-      type: "BTREE",
-      fields: ["created_by"]
-    }, {
-      name: "user_fk_modified_by",
-      unique: false,
-      type: "BTREE",
-      fields: ["modified_by"]
-    }]
+    indexes: []
   };
-  const UserModel = sequelize.define("user_model", attributes, options);
-  return UserModel;
+  const RestaurantCountryMapModel = sequelize.define("restaurant_country_map_model", attributes, options);
+  return RestaurantCountryMapModel;
 };

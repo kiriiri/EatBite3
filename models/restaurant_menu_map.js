@@ -13,18 +13,30 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
-    country_id: {
+    restaurant_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "country_id",
-      unique: "uk_country_id_name_code",
+      field: "restaurant_id",
       references: {
         key: "id",
-        model: "country_model"
+        model: "restaurants_model"
+      }
+    },
+    city_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "city_id",
+      references: {
+        key: "id",
+        model: "city_model"
       }
     },
     date_created: {
@@ -38,16 +50,12 @@ module.exports = sequelize => {
     },
     created_by: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
+      allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "created_by",
-      references: {
-        key: "id",
-        model: "user_model"
-      }
+      field: "created_by"
     },
     date_modified: {
       type: DataTypes.DATE,
@@ -65,28 +73,24 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "modified_by",
-      references: {
-        key: "id",
-        model: "user_model"
-      }
+      field: "modified_by"
     }
   };
   const options = {
-    tableName: "country_city_map",
+    tableName: "restaurant_menu_map",
     comment: "",
     indexes: [{
-      name: "country_city_map_fk_user_created_by",
+      name: "restaurant_menu_map_FK",
       unique: false,
       type: "BTREE",
-      fields: ["created_by"]
+      fields: ["restaurant_id"]
     }, {
-      name: "country_city_map_fk_user_modified_by",
+      name: "restaurant_menu_map_FK_1",
       unique: false,
       type: "BTREE",
-      fields: ["modified_by"]
+      fields: ["city_id"]
     }]
   };
-  const CountryCityMapModel = sequelize.define("country_city_map_model", attributes, options);
-  return CountryCityMapModel;
+  const RestaurantMenuMapModel = sequelize.define("restaurant_menu_map_model", attributes, options);
+  return RestaurantMenuMapModel;
 };
