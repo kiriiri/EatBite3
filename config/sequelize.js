@@ -16,6 +16,7 @@ const connection = new Sequelize(
     {
       host: config.sqlhost,
       dialect: "mysql",
+      port:3360,
       pool: {
         max: 10,
         min: 0,

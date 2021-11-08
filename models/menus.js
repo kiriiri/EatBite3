@@ -22,6 +22,15 @@ module.exports = sequelize => {
       comment: null,
       field: "name"
     },
+    thumbnail_url: {
+      type: DataTypes.STRING(500),
+      allowNull: false,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "thumbnail_url"
+    },
     ingredients: {
       type: DataTypes.STRING(400),
       allowNull: false,

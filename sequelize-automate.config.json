@@ -2,7 +2,7 @@
     "dbOptions": {
       "database": "eatbite",
       "username": "root",
-      "password": "root",
+      "password": "Kiri2018",
       "dialect": "mysql",
       "host": "localhost",
       "port": 3306,
