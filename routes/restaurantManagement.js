@@ -17,6 +17,11 @@ module.exports = function (server, express) {
         this.afterRequestHandler(request, response, result);
       });
     });
-    
+  
+    server.get(basePath + "getPopularMenus", (request, response) => {
+      this.getPopularMenus(request.body, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
     
   };

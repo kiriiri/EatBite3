@@ -6,7 +6,7 @@ const {
     cityMenuMap
 } = require('../config/sequelize');
 
-module.exports = function(){
+module.exports = function () {
 
     this.fetchRestaurants = async (payload) => {
         var response = {};
@@ -43,7 +43,8 @@ module.exports = function(){
             if (payload.id) {
                 query = restaurantMenuModal.findAll({
                     where: {
-                        restaurant_id: payload.id
+                        restaurant_id: payload.id,
+                        is_popular:0
                     },
                     attributes: ['id', 'restaurant_id', 'city_id'],
                     include: [
@@ -52,20 +53,24 @@ module.exports = function(){
                             attributes: ['id', 'name', 'description'],
                         },
                         {
-                        model: cityModal,
-                        attributes: ['id', 'name'],
-                        include : [{
-                            model : cityMenuMap,
-                            attributes: ['id', 'menu_id', 'city_id'],
-                            include : [{
-                                model : menusModal,
-                                attributes: ['id', 'name', 'ingredients'],
+                            model: cityModal,
+                            attributes: ['id', 'name'],
+                            include: [{
+                                model: cityMenuMap,
+                                attributes: ['id', 'menu_id', 'city_id'],
+                                include: [{
+                                    model: menusModal,
+                                    attributes: ['id', 'name', 'ingredients'],
+                                }]
                             }]
                         }]
-                    }]
                 })
             } else {
-                query = menusModal.findAll()
+                query = menusModal.findAll({
+                    where: {
+                        is_popular:0
+                    },
+                })
             }
             query.then((rows) => {
                 response.error = false
@@ -81,5 +86,28 @@ module.exports = function(){
         })
     }
 
-    
+    this.fetchPopularMenus = async (payload) => {
+        var response = {}
+        return new Promise((resolve) => {
+            let query = menusModal.findAll({
+                where: {
+                    is_popular:1
+                },
+            })
+
+            query.then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            })
+            query.catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
+
+
 }
