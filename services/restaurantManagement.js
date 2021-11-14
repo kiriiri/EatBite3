@@ -109,5 +109,24 @@ module.exports = function () {
         })
     }
 
+    this.fetchCities = async (payload) => {
+        var response = {}
+        return new Promise((resolve) => {
+            let query = cityModal.findAll()
+
+            query.then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            })
+            query.catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
+
 
 }

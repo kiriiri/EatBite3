@@ -23,5 +23,13 @@ module.exports = function (server, express) {
         this.afterRequestHandler(request, response, result);
       });
     });
+
+    server.get(basePath + "getCities", (request, response) => {
+      this.getCities(request.body, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
+
+
     
   };
