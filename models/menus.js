@@ -31,6 +31,15 @@ module.exports = sequelize => {
       comment: null,
       field: "thumbnail_url"
     },
+    is_popular: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "is_popular"
+    },
     ingredients: {
       type: DataTypes.STRING(400),
       allowNull: false,
