@@ -4,50 +4,40 @@ const {
 
 module.exports = sequelize => {
   const attributes = {
-    id: {
+    Id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       defaultValue: null,
       primaryKey: true,
       autoIncrement: true,
       comment: null,
-      field: "id"
+      field: "Id"
     },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false,
-      defaultValue: null,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "name"
-    },
-    thumbnail_url: {
-      type: DataTypes.STRING(500),
-      allowNull: false,
-      defaultValue: null,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "thumbnail_url"
-    },
-    is_popular: {
+    restaurant_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      defaultValue: "0",
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "is_popular"
+      field: "restaurant_id",
+      references: {
+        key: "id",
+        model: "restaurants_model"
+      }
     },
-    ingredients: {
-      type: DataTypes.STRING(400),
+    city_id: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "ingredients"
+      field: "city_id",
+      references: {
+        key: "id",
+        model: "city_model"
+      }
     },
     date_created: {
       type: DataTypes.DATE,
@@ -87,10 +77,20 @@ module.exports = sequelize => {
     }
   };
   const options = {
-    tableName: "menus",
+    tableName: "restaurant_city_map",
     comment: "",
-    indexes: []
+    indexes: [{
+      name: "restaurant_city_map_FK",
+      unique: false,
+      type: "BTREE",
+      fields: ["city_id"]
+    }, {
+      name: "restaurant_city_map_FK_1",
+      unique: false,
+      type: "BTREE",
+      fields: ["restaurant_id"]
+    }]
   };
-  const MenusModel = sequelize.define("menus_model", attributes, options);
-  return MenusModel;
+  const RestaurantCityMapModel = sequelize.define("restaurant_city_map_model", attributes, options);
+  return RestaurantCityMapModel;
 };

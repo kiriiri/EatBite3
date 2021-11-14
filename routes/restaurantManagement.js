@@ -30,6 +30,13 @@ module.exports = function (server, express) {
       });
     });
 
+    server.get(basePath + "getCuisines", (request, response) => {
+      this.getCuisines(request.body, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
+
+
 
     
   };

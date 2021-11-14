@@ -72,4 +72,21 @@ module.exports = function(){
         callback(response)
       }
 
+      this.getCuisines = async (payload, callback) => { 
+        var response = {error: true};
+        const result = await this.fetchCuisines(payload)
+        if (result.error) {
+          response.msg = result.msg
+        } else {
+          var data = {}
+          if (result.data.exist) {
+            data = {...result.data.acc}
+          }
+          response.error = false
+          response.msg = result.msg
+          response.data = result.data
+        }
+        callback(response)
+      }
+
 }

@@ -3,7 +3,9 @@ const {
     menusModal,
     restaurantMenuModal,
     cityModal,
-    cityMenuMap
+    cityMenuMap,
+    cuisineModal,
+    restaurantCityModal
 } = require('../config/sequelize');
 
 module.exports = function () {
@@ -43,14 +45,13 @@ module.exports = function () {
             if (payload.id) {
                 query = restaurantMenuModal.findAll({
                     where: {
-                        restaurant_id: payload.id,
-                        is_popular:0
+                        city_id: payload.id,
                     },
                     attributes: ['id', 'restaurant_id', 'city_id'],
                     include: [
                         {
                             model: restaurantsModal,
-                            attributes: ['id', 'name', 'description'],
+                            attributes: ['id', 'name', 'thumbnail_url','description'],
                         },
                         {
                             model: cityModal,
@@ -60,7 +61,7 @@ module.exports = function () {
                                 attributes: ['id', 'menu_id', 'city_id'],
                                 include: [{
                                     model: menusModal,
-                                    attributes: ['id', 'name', 'ingredients'],
+                                    attributes: ['id', 'name','thumbnail_url', 'ingredients'],
                                 }]
                             }]
                         }]
@@ -128,5 +129,25 @@ module.exports = function () {
         })
     }
 
+    this.fetchCuisines = async (payload) => {
+        var response = {}
+        return new Promise((resolve) => {
+            let query = cuisineModal.findAll({
+                attributes: ['id', 'name', 'description'],
+            })
+
+            query.then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            })
+            query.catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
 
 }

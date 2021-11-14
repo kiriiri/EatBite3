@@ -14,7 +14,7 @@ module.exports = sequelize => {
       field: "id"
     },
     name: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(100),
       allowNull: false,
       defaultValue: null,
       primaryKey: false,
@@ -22,32 +22,23 @@ module.exports = sequelize => {
       comment: null,
       field: "name"
     },
-    thumbnail_url: {
-      type: DataTypes.STRING(500),
+    description: {
+      type: DataTypes.STRING(100),
       allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "thumbnail_url"
+      field: "description"
     },
-    is_popular: {
-      type: DataTypes.INTEGER(11),
+    status: {
+      type: DataTypes.INTEGER(1),
       allowNull: false,
       defaultValue: "0",
       primaryKey: false,
       autoIncrement: false,
-      comment: null,
-      field: "is_popular"
-    },
-    ingredients: {
-      type: DataTypes.STRING(400),
-      allowNull: false,
-      defaultValue: null,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "ingredients"
+      comment: "is active for business i.e. 1 - Active, 0 - Inactive",
+      field: "status"
     },
     date_created: {
       type: DataTypes.DATE,
@@ -60,7 +51,7 @@ module.exports = sequelize => {
     },
     created_by: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
@@ -87,10 +78,10 @@ module.exports = sequelize => {
     }
   };
   const options = {
-    tableName: "menus",
+    tableName: "cuisine",
     comment: "",
     indexes: []
   };
-  const MenusModel = sequelize.define("menus_model", attributes, options);
-  return MenusModel;
+  const CuisineModel = sequelize.define("cuisine_model", attributes, options);
+  return CuisineModel;
 };
