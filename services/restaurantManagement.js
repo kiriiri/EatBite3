@@ -5,38 +5,43 @@ const {
     cityModal,
     cityMenuMap,
     cuisineModal,
-    restaurantCityModal
+    restaurantCityModal,
+    cuisineRestaurantMapModal
 } = require('../config/sequelize');
 
 module.exports = function () {
 
     this.fetchRestaurants = async (payload) => {
-        var response = {};
-        return new Promise(async function (resolve) {
-            try {
-                var condition = {};
-                condition.config_name = "AUTH_TYPE";
-                await restaurantsModal
-                    .findAll()
-                    .then(function (rows) {
-                        console.log("rows.............", rows);
-                        response.error = false;
-                        response.data = rows;
-                        response.msg = "VALID";
-                        resolve(response);
-                    })
-                    .catch((error) => {
-                        response.error = true;
-                        response.msg = `DBERROR: $[1],${error.message}`;
-                        resolve(response);
-                    });
-                resolve(response);
-            } catch (err) {
-                err.error = true;
-                resolve(err);
+        var response = {}
+        return new Promise((resolve) => {
+            var query
+            if (payload.id) {
+                query = cuisineRestaurantMapModal.findAll({
+                    where: {
+                        cuisine_id : payload.id
+                    },
+                    include: [
+                        {
+                            model: restaurantsModal
+                        }
+                    ]
+                })
+            } else {
+                query = restaurantsModal.findAll()
             }
-        });
-    };
+            query.then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            })
+            query.catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
 
     this.fetchMenus = async (payload) => {
         var response = {}
@@ -51,7 +56,7 @@ module.exports = function () {
                     include: [
                         {
                             model: restaurantsModal,
-                            attributes: ['id', 'name', 'thumbnail_url','description'],
+                            attributes: ['id', 'name', 'thumbnail_url', 'description'],
                         },
                         {
                             model: cityModal,
@@ -61,7 +66,7 @@ module.exports = function () {
                                 attributes: ['id', 'menu_id', 'city_id'],
                                 include: [{
                                     model: menusModal,
-                                    attributes: ['id', 'name','thumbnail_url', 'ingredients'],
+                                    attributes: ['id', 'name', 'thumbnail_url', 'ingredients'],
                                 }]
                             }]
                         }]
@@ -69,7 +74,7 @@ module.exports = function () {
             } else {
                 query = menusModal.findAll({
                     where: {
-                        is_popular:0
+                        is_popular: 0
                     },
                 })
             }
@@ -92,7 +97,7 @@ module.exports = function () {
         return new Promise((resolve) => {
             let query = menusModal.findAll({
                 where: {
-                    is_popular:1
+                    is_popular: 1
                 },
             })
 
@@ -132,9 +137,20 @@ module.exports = function () {
     this.fetchCuisines = async (payload) => {
         var response = {}
         return new Promise((resolve) => {
-            let query = cuisineModal.findAll({
-                attributes: ['id', 'name', 'description'],
-            })
+            let query
+
+            if (payload.id) {
+                query = cuisineModal.findAll({
+                    where: {
+                        id: payload.id
+                    },
+                    attributes: ['id', 'name', 'description'],
+                })
+            } else {
+                query = cuisineModal.findAll({
+                    attributes: ['id', 'name', 'description'],
+                })
+            }
 
             query.then((rows) => {
                 response.error = false

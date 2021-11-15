@@ -20,7 +20,11 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "country_id"
+      field: "country_id",
+      references: {
+        key: "id",
+        model: "country_model"
+      }
     },
     name: {
       type: DataTypes.STRING(45),
@@ -125,6 +129,11 @@ module.exports = sequelize => {
       unique: false,
       type: "BTREE",
       fields: ["modified_by"]
+    }, {
+      name: "city_FK",
+      unique: false,
+      type: "BTREE",
+      fields: ["country_id"]
     }]
   };
   const CityModel = sequelize.define("city_model", attributes, options);

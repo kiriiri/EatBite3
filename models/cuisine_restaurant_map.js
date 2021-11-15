@@ -13,6 +13,19 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
+    cuisine_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "cuisine_id",
+      references: {
+        key: "id",
+        model: "cuisine_model"
+      }
+    },
     restaurant_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -26,18 +39,14 @@ module.exports = sequelize => {
         model: "restaurants_model"
       }
     },
-    city_id: {
+    status: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      defaultValue: null,
+      defaultValue: "0",
       primaryKey: false,
       autoIncrement: false,
-      comment: null,
-      field: "city_id",
-      references: {
-        key: "id",
-        model: "city_model"
-      }
+      comment: "0-Not active, 1-Active",
+      field: "status"
     },
     date_created: {
       type: DataTypes.DATE,
@@ -77,20 +86,20 @@ module.exports = sequelize => {
     }
   };
   const options = {
-    tableName: "restaurant_city_map",
+    tableName: "cuisine_restaurant_map",
     comment: "",
     indexes: [{
-      name: "restaurant_menu_map_FK",
+      name: "cuisine_restaurant_map_FK",
+      unique: false,
+      type: "BTREE",
+      fields: ["cuisine_id"]
+    }, {
+      name: "cuisine_restaurant_map_FK_1",
       unique: false,
       type: "BTREE",
       fields: ["restaurant_id"]
-    }, {
-      name: "restaurant_menu_map_FK_1",
-      unique: false,
-      type: "BTREE",
-      fields: ["city_id"]
     }]
   };
-  const RestaurantCityMapModel = sequelize.define("restaurant_city_map_model", attributes, options);
-  return RestaurantCityMapModel;
+  const CuisineRestaurantMapModel = sequelize.define("cuisine_restaurant_map_model", attributes, options);
+  return CuisineRestaurantMapModel;
 };

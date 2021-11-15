@@ -3,11 +3,13 @@ const Sequelize = require("sequelize");
 const PersonalDetailsModal = require("../models/personal_details");
 const RestaurantsModal = require("../models/restaurants");
 const MenusModal = require("../models/menus")
-const RestaurantMenuModal = require("../models/restaurant_menu_map")
+const RestaurantMenuModal = require("../models/restaurant_city_map")
 const CityModal = require("../models/city");
 const CityMenuMap = require("../models/city_menu_map");
 const CuisineModal = require("../models/cuisine");
 const RestaurantCityModal = require("../models/restaurant_city_map");
+const CuisineRestaurantMapModal = require("../models/cuisine_restaurant_map");
+
 
 const connection = new Sequelize(
     config.sqldbName,
@@ -38,6 +40,7 @@ const connection = new Sequelize(
   const cityMenuMap = CityMenuMap(connection)
   const cuisineModal = CuisineModal(connection)
   const restaurantCityModal = RestaurantCityModal(connection)
+  const cuisineRestaurantMapModal = CuisineRestaurantMapModal(connection)
 
   restaurantsModal.hasMany(restaurantMenuModal, {foreignKey: "restaurant_id"})
   restaurantMenuModal.belongsTo(restaurantsModal, {foreignKey: "restaurant_id"})
@@ -57,7 +60,15 @@ const connection = new Sequelize(
   menusModal.hasMany(cityMenuMap, {foreignKey: "menu_id"})
   
   restaurantCityModal.belongsTo(cityModal, {foreignKey:"city_id"})
-  cityModal.hasMany(restaurantsModal, {foreignKey : "city_id"})
+ // cityModal.hasMany(restaurantsModal, {foreignKey : "city_id"})
+
+  cuisineModal.hasMany(cuisineRestaurantMapModal, {foreignKey : "cuisine_id"})
+  cuisineRestaurantMapModal.belongsTo(cuisineModal,  {foreignKey:"cuisine_id"})
+
+  cuisineRestaurantMapModal.belongsTo(restaurantsModal,  {foreignKey:"restaurant_id"})
+  restaurantsModal.hasMany(cuisineRestaurantMapModal, {foreignKey : "restaurant_id"})
+
+
 
   module.exports = {
     connection,
@@ -68,5 +79,6 @@ const connection = new Sequelize(
     cityModal,
     cityMenuMap,
     cuisineModal,
-    restaurantCityModal
+    restaurantCityModal,
+    cuisineRestaurantMapModal
   }

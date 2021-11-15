@@ -13,6 +13,19 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
+    cuisine_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "cuisine_id",
+      references: {
+        key: "id",
+        model: "cuisine_model"
+      }
+    },
     name: {
       type: DataTypes.STRING(200),
       allowNull: false,
@@ -89,7 +102,12 @@ module.exports = sequelize => {
   const options = {
     tableName: "menus",
     comment: "",
-    indexes: []
+    indexes: [{
+      name: "menus_FK",
+      unique: false,
+      type: "BTREE",
+      fields: ["cuisine_id"]
+    }]
   };
   const MenusModel = sequelize.define("menus_model", attributes, options);
   return MenusModel;

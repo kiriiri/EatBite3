@@ -4,8 +4,10 @@ module.exports = function (server, express) {
   
     const basePath = "/api/restaurant/";
   
-    server.get(basePath, (request, response) => {
-      this.getRestaurants(request.body, (result) => {
+    server.get(basePath + "getRestaurants/:cuisine_id?", (request, response) => {
+      var data = {};
+      data.id = request.params.cuisine_id || request.query.cuisine_id;
+      this.getRestaurants(data, (result) => {
         this.afterRequestHandler(request, response, result);
       });
     });
@@ -30,8 +32,10 @@ module.exports = function (server, express) {
       });
     });
 
-    server.get(basePath + "getCuisines", (request, response) => {
-      this.getCuisines(request.body, (result) => {
+    server.get(basePath + "getCuisines/:cuisine_id?", (request, response) => {
+      var data = {};
+      data.id = request.params.cuisine_id || request.query.cuisine_id;
+      this.getCuisines(data, (result) => {
         this.afterRequestHandler(request, response, result);
       });
     });
