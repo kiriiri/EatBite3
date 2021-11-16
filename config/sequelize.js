@@ -10,6 +10,8 @@ const CuisineModal = require("../models/cuisine");
 const RestaurantCityModal = require("../models/restaurant_city_map");
 const CuisineRestaurantMapModal = require("../models/cuisine_restaurant_map");
 const RestaurantMenuMapModal = require("../models/restaurants_menu_map");
+const RestaurantListingModal = require("../models/restaurants_listing");
+const ContactModal = require("../models/contact_us");
 
 const connection = new Sequelize(
     config.sqldbName,
@@ -42,6 +44,8 @@ const connection = new Sequelize(
   const restaurantCityModal = RestaurantCityModal(connection)
   const cuisineRestaurantMapModal = CuisineRestaurantMapModal(connection)
   const restaurantMenuMapModal = RestaurantMenuMapModal(connection)
+  const restaurantListingModal = RestaurantListingModal(connection)
+  const contactModal = ContactModal(connection)
 
   restaurantsModal.hasMany(restaurantMenuModal, {foreignKey: "restaurant_id"})
   restaurantMenuModal.belongsTo(restaurantsModal, {foreignKey: "restaurant_id"})
@@ -76,6 +80,8 @@ const connection = new Sequelize(
   cityModal.hasMany(restaurantMenuMapModal, {foreignKey : "city_id"})
 
 
+
+
   module.exports = {
     connection,
     personalDetailsModal,
@@ -87,5 +93,7 @@ const connection = new Sequelize(
     cuisineModal,
     restaurantCityModal,
     cuisineRestaurantMapModal,
-    restaurantMenuMapModal
+    restaurantMenuMapModal,
+    restaurantListingModal,
+    contactModal
   }

@@ -106,4 +106,32 @@ module.exports = function(){
         callback(response)
       }
 
+      this.listRestaurant = async (payload, callback) => { 
+        var response = {error: true};
+        var body = payload.body
+        console.log("listRestaurant........", body)
+        const result = await this.addRestaurantListing(body)
+        if (result.error) {
+          response.msg = result.msg
+        } else {
+          response.error = false
+          response.msg = result.msg
+        }
+        callback(response)
+      }
+
+      this.submitContactInfo = async (payload, callback) => { 
+        var response = {error: true};
+        var body = payload.body
+        console.log("submitContactInfo........", body)
+        const result = await this.addContactInfo(body)
+        if (result.error) {
+          response.msg = result.msg
+        } else {
+          response.error = false
+          response.msg = result.msg
+        }
+        callback(response)
+      }
+
 }

@@ -53,5 +53,16 @@ module.exports = function (server, express) {
       });
     });
 
+    server.post(basePath + "listRestaurant", (request, response) => {
+      this.listRestaurant(request, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
+
+    server.post(basePath + "contact", (request, response) => {
+      this.submitContactInfo(request, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
     
   };

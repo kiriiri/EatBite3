@@ -7,7 +7,9 @@ const {
     cuisineModal,
     restaurantCityModal,
     cuisineRestaurantMapModal,
-    restaurantMenuMapModal
+    restaurantMenuMapModal,
+    restaurantListingModal,
+    contactModal
 } = require('../config/sequelize');
 
 module.exports = function () {
@@ -170,6 +172,40 @@ module.exports = function () {
                     is_popular: 1
                 }
             }).then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            }).catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
+
+    this.addRestaurantListing = async (payload) => {
+        var response = {}
+        return new Promise(async function (resolve){
+            await restaurantListingModal.create(payload)
+            .then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            }).catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
+
+    this.addContactInfo = async (payload) => {
+        var response = {}
+        return new Promise(async function (resolve) {
+            await contactModal.create(payload)
+            .then((rows) => {
                 response.error = false
                 response.data = rows
                 response.msg = 'VALID'
