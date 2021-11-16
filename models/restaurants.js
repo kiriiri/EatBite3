@@ -40,6 +40,60 @@ module.exports = sequelize => {
       comment: null,
       field: "description"
     },
+    modified_by: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "modified_by"
+    },
+    open_hrs: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      defaultValue: "10 :: 00",
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "open_hrs"
+    },
+    close_hrs: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      defaultValue: "10 :: 00",
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "close_hrs"
+    },
+    mobile_no: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "mobile_no"
+    },
+    email: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "email"
+    },
+    address: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "address"
+    },
     date_created: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -66,15 +120,6 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "date_modified"
-    },
-    modified_by: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true,
-      defaultValue: null,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "modified_by"
     }
   };
   const options = {

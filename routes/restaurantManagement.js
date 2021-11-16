@@ -12,10 +12,17 @@ module.exports = function (server, express) {
       });
     });
   
-    server.get(basePath + "getMenus/:restaurant_id?", (request, response) => {
+    server.get(basePath + "getCityRestaurants/:restaurant_id", (request, response) => {
       var data = {};
       data.id = request.params.restaurant_id || request.query.restaurant_id;
-      this.getMenus(data, (result) => {
+      this.getCityRestaurants(data, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
+
+    server.get(basePath + "getPopulorMenus", (request, response) => {
+      var data = {};
+      this.getCityRestaurants(data, (result) => {
         this.afterRequestHandler(request, response, result);
       });
     });
@@ -40,7 +47,11 @@ module.exports = function (server, express) {
       });
     });
 
-
+    server.get(basePath + "getPopularCuisines", (request, response) => {
+      this.getPopularCuisines(request.body, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
 
     
   };

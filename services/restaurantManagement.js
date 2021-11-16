@@ -6,7 +6,8 @@ const {
     cityMenuMap,
     cuisineModal,
     restaurantCityModal,
-    cuisineRestaurantMapModal
+    cuisineRestaurantMapModal,
+    restaurantMenuMapModal
 } = require('../config/sequelize');
 
 module.exports = function () {
@@ -18,7 +19,7 @@ module.exports = function () {
             if (payload.id) {
                 query = cuisineRestaurantMapModal.findAll({
                     where: {
-                        cuisine_id : payload.id
+                        cuisine_id: payload.id
                     },
                     include: [
                         {
@@ -43,33 +44,23 @@ module.exports = function () {
         })
     }
 
-    this.fetchMenus = async (payload) => {
+    this.fetchCityRestaurants = async (payload) => {
         var response = {}
         return new Promise((resolve) => {
             var query
             if (payload.id) {
-                query = restaurantMenuModal.findAll({
+                query = restaurantMenuMapModal.findAll({
                     where: {
                         city_id: payload.id,
                     },
-                    attributes: ['id', 'restaurant_id', 'city_id'],
                     include: [
                         {
-                            model: restaurantsModal,
-                            attributes: ['id', 'name', 'thumbnail_url', 'description'],
+                            model: restaurantsModal
                         },
                         {
-                            model: cityModal,
-                            attributes: ['id', 'name'],
-                            include: [{
-                                model: cityMenuMap,
-                                attributes: ['id', 'menu_id', 'city_id'],
-                                include: [{
-                                    model: menusModal,
-                                    attributes: ['id', 'name', 'thumbnail_url', 'ingredients'],
-                                }]
-                            }]
-                        }]
+                            model: cityModal
+                        }
+                    ]
                 })
             } else {
                 query = menusModal.findAll({
@@ -140,11 +131,16 @@ module.exports = function () {
             let query
 
             if (payload.id) {
-                query = cuisineModal.findAll({
+                query = cuisineRestaurantMapModal.findAll({
                     where: {
-                        id: payload.id
+                        cuisine_id: payload.id
                     },
-                    attributes: ['id', 'name', 'description'],
+                    include: [{
+                        model: restaurantsModal,
+                        include: [{
+                            model: restaurantMenuMapModal
+                        }]
+                    }]
                 })
             } else {
                 query = cuisineModal.findAll({
@@ -159,6 +155,26 @@ module.exports = function () {
                 resolve(response)
             })
             query.catch(error => {
+                response.error = true
+                response.msg = `DBERROR: $[1],${error.message}`
+                resolve(response)
+            })
+        })
+    }
+
+    this.fetchPopularCuisines = async (payload) => {
+        var response = {}
+        return new Promise((resolve) => {
+            cuisineModal.findAll({
+                where: {
+                    is_popular: 1
+                }
+            }).then((rows) => {
+                response.error = false
+                response.data = rows
+                response.msg = 'VALID'
+                resolve(response)
+            }).catch(error => {
                 response.error = true
                 response.msg = `DBERROR: $[1],${error.message}`
                 resolve(response)
