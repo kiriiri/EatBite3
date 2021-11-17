@@ -64,5 +64,11 @@ module.exports = function (server, express) {
         this.afterRequestHandler(request, response, result);
       });
     });
+
+    server.post(basePath + "createCustomer", (request, response) => {
+      this.addCustomer(request, (result) => {
+        this.afterRequestHandler(request, response, result);
+      });
+    });
     
   };

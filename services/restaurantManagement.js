@@ -1,4 +1,5 @@
 const {
+    personalDetailsModal,
     restaurantsModal,
     menusModal,
     restaurantMenuModal,
@@ -9,7 +10,9 @@ const {
     cuisineRestaurantMapModal,
     restaurantMenuMapModal,
     restaurantListingModal,
-    contactModal
+    customerModal,
+    contactModal,
+    connection
 } = require('../config/sequelize');
 
 module.exports = function () {
@@ -215,6 +218,65 @@ module.exports = function () {
                 response.msg = `DBERROR: $[1],${error.message}`
                 resolve(response)
             })
+        })
+    }
+
+    this.createCustomer = async (payload) => {
+        var response = {}
+        var personal_details;
+        var customer_details;
+        var transaction;
+
+        return new Promise(async function (resolve) {
+
+            try {
+                
+                transaction = await connection.transaction();
+                await personalDetailsModal.findOrCreate({
+                    where : {
+                        id_number : payload.id_number
+                    },
+                    defaults:{
+                        first_name: payload.first_name,
+                        last_name: payload.last_name,
+                        id_number: payload.id_number,
+                        country_id: 1,
+                        created_by : 1
+                    },
+                    transaction
+                })
+                .then(async function (rows){
+                    personal_details = rows[0].dataValues
+                    response.personal_details = personal_details
+                })
+
+                await customerModal.findOrCreate({
+                    where : {
+                        detail_id : personal_details.id
+                    },
+                    defaults:{
+                        detail_id : personal_details.id,
+                        created_by : 1
+                    },
+                    transaction
+                })
+                .then(async function (rows){
+                    await transaction.commit()
+                    customer_details = rows[0].dataValues
+                    response.customer_details = customer_details
+                    response.error = false
+                    response.msg = 'VALID'
+                    resolve(response)
+                })
+
+            } catch (err) {
+                console.log("error....  ", err)
+                await transaction.rollback().then (done =>{
+                    response.error = true
+                    response.msg = `DBERROR: $[1],${err.message}`
+                    resolve(response)
+                })
+            }
         })
     }
 

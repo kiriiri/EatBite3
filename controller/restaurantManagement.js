@@ -120,11 +120,11 @@ module.exports = function(){
         callback(response)
       }
 
-      this.submitContactInfo = async (payload, callback) => { 
+      this.addCustomer = async (payload, callback) => { 
         var response = {error: true};
         var body = payload.body
         console.log("submitContactInfo........", body)
-        const result = await this.addContactInfo(body)
+        const result = await this.createCustomer(body)
         if (result.error) {
           response.msg = result.msg
         } else {
@@ -133,5 +133,7 @@ module.exports = function(){
         }
         callback(response)
       }
+
+
 
 }

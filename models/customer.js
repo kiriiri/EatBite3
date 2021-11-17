@@ -43,7 +43,7 @@ module.exports = sequelize => {
     },
     created_by: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
